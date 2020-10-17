@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { debounce } from 'lodash';
-import { cssBind } from '@toolkit/helper';
+import { cssBind, getPokemonImage, capitalize } from '@toolkit/helper';
 import Button from '@components/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { makeCancelable } from '@toolkit/helper/makeCancelable';
+import { SavedPokemon } from '../../App';
 
 import styles from './PokemonDisplay.scss';
 
@@ -13,23 +13,24 @@ const css = cssBind(styles);
 
 const API_ENDPOINT = 'https://pokeapi.co/api/v2/pokedex/2';
 
-interface Props {}
+interface Props {
+    savedPokemon: SavedPokemon;
+}
 
 enum ToggleMode {
     ALL = 1,
     SAVED = 2,
 }
 
-const getImage = (id: number): string =>
-    `https://pokeres.bastionbot.org/images/pokemon/${id}.png`;
-
-const PokemonDisplay = (props: Props): JSX.Element => {
+const PokemonDisplay: React.FC<Props> = (props) => {
     const [toggleMode, setToggleMode] = React.useState(ToggleMode.ALL);
     const [skeletonLoading, setSkeletonLoading] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [pokemonList, setPokemonList] = React.useState<any[]>([]);
     const [searchValue, setSearchValue] = React.useState('');
     const pokemonListRef = React.useRef<any>([]);
+
+    const { savedPokemon } = props;
 
     const handleToggleClick = (toggle: ToggleMode) => (): void => {
         setToggleMode(toggle);
@@ -79,18 +80,12 @@ const PokemonDisplay = (props: Props): JSX.Element => {
         return <SearchIcon />;
     };
 
-    const capitalizeName = (name: string): string => {
-        const nameArray = name.split('');
-        nameArray[0] = nameArray[0].toUpperCase();
-        return nameArray.join('');
-    };
-
     const renderList = (): JSX.Element => {
         if (skeletonLoading) {
             return (
                 <>
-                    {Array.from({ length: 20 }, (): JSX.Element => (
-                        <li className={css('panel skeleton')} />
+                    {Array.from({ length: 20 }, (_, index): JSX.Element => (
+                        <li key={index} className={css('panel skeleton')} />
                     ))}
                 </>
             );
@@ -103,18 +98,20 @@ const PokemonDisplay = (props: Props): JSX.Element => {
                 {pokemonList.map((pokemon): JSX.Element => {
                     const { entry_number, pokemon_species } = pokemon;
                     return (
-                        <li>
+                        <li
+                            key={entry_number}
+                        >
                             <Link
                                 to={`pokemon/${entry_number}`}
                                 className={css('panel')}
                                 aria-label={pokemon_species.name}
                             >
                                 <img
-                                    src={getImage(entry_number)}
+                                    src={getPokemonImage(entry_number)}
                                     alt={pokemon_species.name}
                                     className={css('pokemonImage')}
                                 />
-                                <span className={css('name')}>{capitalizeName(pokemon_species.name)}</span>
+                                <span className={css('name')}>{capitalize(pokemon_species.name)}</span>
                             </Link>
                         </li>
                     );

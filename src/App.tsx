@@ -15,8 +15,12 @@ const defaultSuspense = {
 const PokemonDisplay = lazy(() => import(/* webpackChunkName: "PokemonDisplay" */'./pages/PokemonDisplay'));
 const Profile = lazy(() => import(/* webpackChunkName: "PokemonDisplay" */'./pages/Profile'));
 
+export interface SavedPokemon {
+    [key: string]: boolean;
+}
+
 const App = (): JSX.Element => {
-    const [savedPokemon, setSavedPokemon] = React.useState<any[]>([]);
+    const [savedPokemon, setSavedPokemon] = React.useState<SavedPokemon>({});
     return (
         <div>
             <Header />
@@ -24,12 +28,12 @@ const App = (): JSX.Element => {
                 <Switch>
                     <Route exact path="/">
                         <Suspense {...defaultSuspense}>
-                            <PokemonDisplay />
+                            <PokemonDisplay savedPokemon={savedPokemon} />
                         </Suspense>
                     </Route>
                     <Route exact path="/pokemon/:id">
                         <Suspense {...defaultSuspense}>
-                            <Profile />
+                            <Profile savedPokemon={savedPokemon} setSavedPokemon={setSavedPokemon} />
                         </Suspense>
                     </Route>
                 </Switch>
