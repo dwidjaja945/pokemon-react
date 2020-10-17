@@ -113,6 +113,7 @@ const PokemonDisplay = (props: Props): JSX.Element => {
                             <button
                                 type="button"
                                 className={css('panel')}
+                                aria-label={pokemon_species.name}
                             >
                                 <img
                                     src={getImage(entry_number)}
