@@ -5,7 +5,6 @@
 .buttonToggle {
     display: flex;
     justify-content: center;
-    gap: 20px;
 }
 
 .button {
@@ -60,7 +59,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
     padding: 20px;
     list-style: none;
 }
@@ -75,6 +73,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    margin: 10px;
     padding: 20px;
     transition: box-shadow 0.2s ease;
     cursor: pointer;

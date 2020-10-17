@@ -13,4 +13,9 @@
         --primaryDark: darken(#E3350D, 20);
         --secondaryDark: darken(#0F7173, 20);
     }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 }

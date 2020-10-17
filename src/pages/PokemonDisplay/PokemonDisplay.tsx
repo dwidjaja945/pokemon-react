@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { debounce } from 'lodash';
 import { cssBind } from '@toolkit/helper';
 import Button from '@components/Button';
@@ -67,13 +68,6 @@ const PokemonDisplay = (props: Props): JSX.Element => {
         setPokemonList(newList);
     }, [searchValue]);
 
-    const setSearch = debounce((searchText: string) =>
-        setSearchValue(searchText));
-
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setSearch(event.target.value);
-    };
-
     const getIcon = (): JSX.Element => {
         if (searchValue.length) {
             return (
@@ -110,8 +104,8 @@ const PokemonDisplay = (props: Props): JSX.Element => {
                     const { entry_number, pokemon_species } = pokemon;
                     return (
                         <li>
-                            <button
-                                type="button"
+                            <Link
+                                to={`pokemon/${entry_number}`}
                                 className={css('panel')}
                                 aria-label={pokemon_species.name}
                             >
@@ -121,7 +115,7 @@ const PokemonDisplay = (props: Props): JSX.Element => {
                                     className={css('pokemonImage')}
                                 />
                                 <span className={css('name')}>{capitalizeName(pokemon_species.name)}</span>
-                            </button>
+                            </Link>
                         </li>
                     );
                 })}
@@ -151,7 +145,8 @@ const PokemonDisplay = (props: Props): JSX.Element => {
                 <div className={css('inputContent')}>
                     <input
                         value={searchValue}
-                        onChange={handleSearch}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                            setSearchValue(event.target.value)}
                         type="text"
                         placeholder="Search..."
                         className={css('input')}
