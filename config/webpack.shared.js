@@ -1,4 +1,5 @@
 const webpack = require('webpack'); 
+const dotenv = require('dotenv');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -14,6 +15,14 @@ const babelLoader = {
     loader: 'babel-loader',
     options: { babelrc: true },
 };
+
+const env = dotenv.config().parsed;
+  
+const envKeys = Object.keys(env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    return prev;
+}, {});
+
 
 module.exports = {
     entry: path.resolve(__dirname, '../src/index.tsx'),
@@ -35,7 +44,8 @@ module.exports = {
             filename: isProduction ? '[name].[hash].css' : '[name].css',
             chunkFilename: isProduction ? '[id].[hash].css' : '[id].css',
             ignoreOrder: false,
-        })
+        }),
+        new webpack.DefinePlugin(envKeys)
     ],
     optimization: {
         minimizer: [

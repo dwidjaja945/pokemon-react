@@ -13,18 +13,20 @@ import styles from './Profile.scss';
 
 const css = cssBind(styles);
 
-const getPokemonDataEndpoint = (id: number):string => `https://pokeapi.co/api/v2/pokemon/${id}`;
-
-const GOOGLE_MAP_API_KEY = 'HHko9Fuxf293b3w56zAJ89s3IcO9D5enaEPIg86l';
-// TODO - store in process.env
+const getPokemonDataEndpoint = (id: number): string => `https://pokeapi.co/api/v2/pokemon/${id}`;
+const getPokemonLocationEndpoint = (id: number): string => `https://api.craft-demo.net/pokemon/${id}`;
 
 interface Props {
     savedPokemon: SavedPokemon;
     setSavedPokemon: React.Dispatch<SavedPokemon>;
 }
 
+interface Coords {
+    lat: number;
+    lng: number;
+}
+
 const Profile: React.FC<Props> = (props) => {
-    useScript(`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_API_KEY}&callback=initMap`);
     const {
         id,
     } = useParams();
@@ -33,28 +35,63 @@ const Profile: React.FC<Props> = (props) => {
         pokemonData,
         setPokemonData,
     ] = React.useState<any>(null);
+    const [locations, setLocations] = React.useState<string[]>([]);
+
+    const mapRef = React.useRef<HTMLDivElement | null>(null);
+    const scriptLoaded = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAP_API_KEY}&callback=initMap`, true, true);
+
+    const createGoogleMap = (center: Coords): any => new (window as any).google.maps.Map(mapRef.current, {
+        zoom: 10,
+        center,
+    });
+    React.useEffect(() => {
+        if (locations.length) {
+            const firstLocation = locations[0];
+            if (firstLocation) {
+                const [lat, lng] = firstLocation?.split(',');
+                const center: Coords = {
+                    lat: Number(lat),
+                    lng: Number(lng),
+                };
+                const map = createGoogleMap(center);
+                locations.forEach((location) => {
+                    const [lat, lng] = location.split(',');
+                    const position: Coords = {
+                        lat: Number(lat),
+                        lng: Number(lng),
+                    };
+                    const marker = new (window as any).google.maps.Marker({
+                        position,
+                        map,
+                    });
+                });
+            }
+        }
+    }, [scriptLoaded, locations]);
 
     React.useEffect(() => {
-        const cancelableCall = makeCancelable(fetch(getPokemonDataEndpoint(id)));
-
-        cancelableCall.promise.then((res) => res.json()).then((response) => {
+        const pokemonDataCall = makeCancelable(fetch(getPokemonDataEndpoint(id)));
+        const locationCall = makeCancelable(fetch(getPokemonLocationEndpoint(id), {
+            method: 'GET',
+            headers: {
+                'x-api-key': 'HHko9Fuxf293b3w56zAJ89s3IcO9D5enaEPIg86l',
+            },
+        }));
+        pokemonDataCall.promise.then((res) => res.json()).then((response) => {
             setPokemonData(response);
         });
+        locationCall.promise.then((res) => res.json()).then(({ locations }) => {
+            setLocations(locations);
+        });
         return (): void => {
-            if (cancelableCall.isPending()) cancelableCall.cancel();
+            if (pokemonDataCall.isPending()) pokemonDataCall.cancel();
         };
     }, []);
 
     React.useEffect(() => {
-        const map = new google.maps.Map(
-            document.getElementById('map') as HTMLElement,
-            {
-                zoom: 4,
-                center: 
-            }
-        );
+
     }, []);
-    
+
     const handleCheck = (): void => {
         if (savedPokemon[id]) {
             delete savedPokemon[id];
@@ -71,8 +108,8 @@ const Profile: React.FC<Props> = (props) => {
                 {(types as any[]).map((typeData: any): JSX.Element => {
                     const { type } = typeData;
                     return (
-                        <div className={css('type')}>
-                            {capitalize(type.name)}
+                        <div className={css('type')} key={`type-${id}-${type.name}`}>
+                            {capitalize(type?.name)}
                         </div>
                     );
                 })}
@@ -118,7 +155,7 @@ const Profile: React.FC<Props> = (props) => {
                 </div>
             </div>
             <div>
-                <div id="map" />
+                <div ref={mapRef} className={css('map')} />
             </div>
         </div>
     );

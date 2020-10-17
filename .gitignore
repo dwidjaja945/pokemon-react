@@ -7,3 +7,4 @@ jest_0/
 .eslintcache
 .out
 dist/
+.env
