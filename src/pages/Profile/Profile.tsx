@@ -127,7 +127,7 @@ const Profile: React.FC<Props> = (props) => {
                     <div className={css('typeTitle')}>Types:</div>
                     <div className={css('types')}>{renderTypes()}</div>
                 </div>
-                <form
+                <div
                     className={css('bag')}
                 >
                     <label htmlFor="savePokemon">
@@ -140,7 +140,7 @@ const Profile: React.FC<Props> = (props) => {
                             checked={Boolean(savedPokemon[id])}
                         />
                     </label>
-                </form>
+                </div>
                 <div className={css('description')}>
                     Lorem ipsum dolor sit, amet consectetur
                     adipisicing elit. Doloribus veniam laboriosam

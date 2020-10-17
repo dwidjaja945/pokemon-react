@@ -2,8 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const config = require('./webpack.shared.js');
 
-const API_HOST = "http://localhost:3001";
-
 const port = 3000;
 
 config.mode = 'development';
@@ -17,9 +15,7 @@ config.devServer = {
     liveReload: true,
     open: true,
     overlay: true,
-    proxy: {
-        target: API_HOST,
-    },
+    historyApiFallback: true
 }
 
 const globalVars = {
