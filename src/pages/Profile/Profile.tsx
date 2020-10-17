@@ -18,7 +18,7 @@ const getPokemonLocationEndpoint = (id: number): string => `https://api.craft-de
 
 interface Props {
     savedPokemon: SavedPokemon;
-    setSavedPokemon: React.Dispatch<SavedPokemon>;
+    savePokemon(id: string): void;
 }
 
 interface Coords {
@@ -30,7 +30,7 @@ const Profile: React.FC<Props> = (props) => {
     const {
         id,
     } = useParams();
-    const { savedPokemon, setSavedPokemon } = props;
+    const { savedPokemon, savePokemon } = props;
     const [
         pokemonData,
         setPokemonData,
@@ -93,12 +93,7 @@ const Profile: React.FC<Props> = (props) => {
     }, []);
 
     const handleCheck = (): void => {
-        if (savedPokemon[id]) {
-            delete savedPokemon[id];
-        } else {
-            savedPokemon[id] = true;
-        }
-        setSavedPokemon({ ...savedPokemon });
+        savePokemon(String(id));
     };
 
     const renderTypes = (): JSX.Element => {

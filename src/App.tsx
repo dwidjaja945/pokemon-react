@@ -21,6 +21,16 @@ export interface SavedPokemon {
 
 const App = (): JSX.Element => {
     const [savedPokemon, setSavedPokemon] = React.useState<SavedPokemon>({});
+
+    const savePokemon = (id: string): void => {
+        const item = localStorage.getItem(id);
+        if (!item) {
+            localStorage.setItem(id, 'true');
+        } else {
+            localStorage.removeItem(id);
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -28,12 +38,15 @@ const App = (): JSX.Element => {
                 <Switch>
                     <Route exact path="/">
                         <Suspense {...defaultSuspense}>
-                            <PokemonDisplay savedPokemon={savedPokemon} />
+                            <PokemonDisplay
+                                savedPokemon={savedPokemon}
+                                setSavedPokemon={setSavedPokemon}
+                            />
                         </Suspense>
                     </Route>
                     <Route exact path="/pokemon/:id">
                         <Suspense {...defaultSuspense}>
-                            <Profile savedPokemon={savedPokemon} setSavedPokemon={setSavedPokemon} />
+                            <Profile savedPokemon={savedPokemon} savePokemon={savePokemon} />
                         </Suspense>
                     </Route>
                 </Switch>

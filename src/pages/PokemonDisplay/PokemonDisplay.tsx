@@ -15,6 +15,7 @@ const API_ENDPOINT = 'https://pokeapi.co/api/v2/pokedex/2';
 
 interface Props {
     savedPokemon: SavedPokemon;
+    setSavedPokemon: React.Dispatch<SavedPokemon>;
 }
 
 enum ToggleMode {
@@ -30,11 +31,34 @@ const PokemonDisplay: React.FC<Props> = (props) => {
     const [searchValue, setSearchValue] = React.useState('');
     const pokemonListRef = React.useRef<any>([]);
 
-    const { savedPokemon } = props;
+    const { savedPokemon, setSavedPokemon } = props;
 
     const handleToggleClick = (toggle: ToggleMode) => (): void => {
         setToggleMode(toggle);
     };
+
+    const getSavedPokemon = (entries: any): void => {
+        const saved: SavedPokemon = {};
+        entries.forEach(({ entry_number }: any): void => {
+            const item = localStorage.getItem(entry_number);
+            if (item) {
+                saved[entry_number] = true;
+            }
+        });
+        setSavedPokemon(saved);
+    };
+
+    React.useEffect(() => {
+        let newList = pokemonListRef.current;
+        if (toggleMode === ToggleMode.SAVED) {
+            newList = [];
+            pokemonListRef.current?.forEach((pokemon: any) => {
+                const { entry_number } = pokemon;
+                if (savedPokemon[entry_number]) newList.push(pokemon);
+            });
+        }
+        setPokemonList(newList);
+    }, [toggleMode]);
 
     const didMountRef = React.useRef(false);
     React.useEffect(() => {
@@ -50,6 +74,7 @@ const PokemonDisplay: React.FC<Props> = (props) => {
                 setSkeletonLoading(false);
                 setIsLoading(false);
                 setPokemonList(resp.pokemon_entries);
+                getSavedPokemon(resp.pokemon_entries);
                 pokemonListRef.current = resp.pokemon_entries;
             });
         return () => {
