@@ -1,0 +1,25 @@
+.button {
+    color: white;
+    border-radius: 2px;
+    padding: 10px;
+
+    &.primary {
+        background-color: var(--primary);
+        border: 1px solid var(--primary);
+
+        &.outlined {
+            background-color: unset;
+            color: var(--primary);
+        }
+    }
+
+    &.secondary {
+        background-color: var(--secondary);
+        border: 1px solid var(--secondary);
+
+        &.outlined {
+            background-color: unset;
+            color: var(--secondary);
+        }
+    }
+}

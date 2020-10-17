@@ -1,0 +1,9 @@
+:global {
+    --primary: #E3350D;
+    --secondary: #0F7173;
+    --primaryDark: darken(#E3350D, 20);
+    --secondaryDark: darken(#0F7173, 20);
+}
+
+$primary: var(--primary);
+$secondary: var(--secondary);
