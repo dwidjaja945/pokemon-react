@@ -66,6 +66,7 @@ module.exports = {
             "@contexts": path.resolve(__dirname, '../src/contexts'),
             "@toolkit": path.resolve(__dirname, "../src/toolkit"),
             "@hooks": path.resolve(__dirname, '../src/toolkit/hooks'),
+            "@assets": path.resolve(__dirname, '../src/assets'),
         },
     },
     module: {

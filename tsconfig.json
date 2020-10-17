@@ -33,7 +33,7 @@
                 "src/pages/*"
             ],
             "@assets/*": [
-                "assets/*"
+                "src/assets/*"
             ],
             "@test/*": [
                 "test/*"
