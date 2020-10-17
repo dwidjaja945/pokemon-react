@@ -13,7 +13,7 @@ const css = cssBind(styles);
 
 const API_ENDPOINT = 'https://pokeapi.co/api/v2/pokedex/2';
 
-interface Props {
+export interface Props {
     savedPokemon: SavedPokemon;
     setSavedPokemon: React.Dispatch<SavedPokemon>;
 }
@@ -110,7 +110,7 @@ const PokemonDisplay: React.FC<Props> = (props) => {
             return (
                 <>
                     {Array.from({ length: 20 }, (_, index): JSX.Element => (
-                        <li key={index} className={css('panel skeleton')} />
+                        <li data-testid={`skeleton-${index}`} key={index} className={css('panel skeleton')} />
                     ))}
                 </>
             );
