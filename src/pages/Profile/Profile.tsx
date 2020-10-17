@@ -88,10 +88,6 @@ const Profile: React.FC<Props> = (props) => {
         };
     }, []);
 
-    React.useEffect(() => {
-
-    }, []);
-
     const handleCheck = (): void => {
         savePokemon(String(id));
     };

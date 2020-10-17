@@ -37,17 +37,6 @@ const PokemonDisplay: React.FC<Props> = (props) => {
         setToggleMode(toggle);
     };
 
-    const getSavedPokemon = (entries: any): void => {
-        const saved: SavedPokemon = {};
-        entries.forEach(({ entry_number }: any): void => {
-            const item = localStorage.getItem(entry_number);
-            if (item) {
-                saved[entry_number] = true;
-            }
-        });
-        setSavedPokemon(saved);
-    };
-
     React.useEffect(() => {
         let newList = pokemonListRef.current;
         if (toggleMode === ToggleMode.SAVED) {
@@ -59,6 +48,17 @@ const PokemonDisplay: React.FC<Props> = (props) => {
         }
         setPokemonList(newList);
     }, [toggleMode]);
+
+    const getSavedPokemon = (entries: any): void => {
+        const saved: SavedPokemon = {};
+        entries.forEach(({ entry_number }: any): void => {
+            const item = localStorage.getItem(entry_number);
+            if (item) {
+                saved[entry_number] = true;
+            }
+        });
+        setSavedPokemon(saved);
+    };
 
     const didMountRef = React.useRef(false);
     React.useEffect(() => {
