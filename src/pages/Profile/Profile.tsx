@@ -127,16 +127,20 @@ const Profile: React.FC<Props> = (props) => {
                     <div className={css('typeTitle')}>Types:</div>
                     <div className={css('types')}>{renderTypes()}</div>
                 </div>
-                <div
+                <form
                     className={css('bag')}
                 >
-                    In Bag:
-                    <input
-                        type="checkbox"
-                        onChange={handleCheck}
-                        checked={savedPokemon[id]}
-                    />
-                </div>
+                    <label htmlFor="savePokemon">
+                        In Bag:
+                        <input
+                            type="checkbox"
+                            id="savePokemon"
+                            name="savePokemon"
+                            onChange={handleCheck}
+                            checked={Boolean(savedPokemon[id])}
+                        />
+                    </label>
+                </form>
                 <div className={css('description')}>
                     Lorem ipsum dolor sit, amet consectetur
                     adipisicing elit. Doloribus veniam laboriosam

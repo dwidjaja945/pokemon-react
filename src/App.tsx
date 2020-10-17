@@ -26,9 +26,12 @@ const App = (): JSX.Element => {
         const item = localStorage.getItem(id);
         if (!item) {
             localStorage.setItem(id, 'true');
+            savedPokemon[id] = true;
         } else {
             localStorage.removeItem(id);
+            delete savedPokemon[id];
         }
+        setSavedPokemon({ ...savedPokemon });
     };
 
     return (
