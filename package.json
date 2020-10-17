@@ -1,5 +1,5 @@
 {
-  "name": "react-typescript",
+  "name": "Intuit-Pokemon-React",
   "version": "1.0.0",
   "description": "A starter for React-Typescript Apps",
   "scripts": {
@@ -14,14 +14,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dwidjaja945/react-typescript.git"
+    "url": "git+https://github.com/dwidjaja945/pokemon-react.git"
   },
   "author": "Dylan Widjaja",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dwidjaja945/react-typescript/issues"
+    "url": "https://github.com/dwidjaja945/pokemon-react/issues"
   },
-  "homepage": "https://github.com/dwidjaja945/react-typescript#readme",
+  "homepage": "https://github.com/dwidjaja945/pokemon-react.git",
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
