@@ -14,19 +14,22 @@ const defaultSuspense = {
 
 const PokemonDisplay = lazy(() => import(/* webpackChunkName: "PokemonDisplay" */'./pages/PokemonDisplay'));
 
-const App = (): JSX.Element => (
-    <div>
-        <Header />
-        <div className={css('container')}>
-            <Switch>
-                <Route path="/">
-                    <Suspense {...defaultSuspense}>
-                        <PokemonDisplay />
-                    </Suspense>
-                </Route>
-            </Switch>
+const App = (): JSX.Element => {
+    const [savedPokemon, setSavedPokemon] = React.useState<any[]>([]);
+    return (
+        <div>
+            <Header />
+            <div className={css('container')}>
+                <Switch>
+                    <Route path="/">
+                        <Suspense {...defaultSuspense}>
+                            <PokemonDisplay />
+                        </Suspense>
+                    </Route>
+                </Switch>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default App;
