@@ -38,12 +38,13 @@ const Profile: React.FC<Props> = (props) => {
     const [locations, setLocations] = React.useState<string[]>([]);
 
     const mapRef = React.useRef<HTMLDivElement | null>(null);
-    const scriptLoaded = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAP_API_KEY}&callback=initMap`, true, true);
+    const scriptLoaded = useScript(`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAP_API_KEY}`, true, true);
 
-    const createGoogleMap = (center: Coords): any => new (window as any).google.maps.Map(mapRef.current, {
-        zoom: 10,
-        center,
-    });
+    const createGoogleMap = (center: Coords): any =>
+        new (window as any).google.maps.Map(mapRef.current, {
+            zoom: 10,
+            center,
+        });
     React.useEffect(() => {
         if (locations.length) {
             const firstLocation = locations[0];
