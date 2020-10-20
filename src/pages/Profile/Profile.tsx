@@ -7,6 +7,7 @@ import {
     makeCancelable,
 } from '@toolkit/helper';
 import useScript from '@toolkit/hooks/useScript';
+import Button from '@components/Button';
 import { SavedPokemon } from '../../App';
 
 import styles from './Profile.scss';
@@ -86,6 +87,7 @@ const Profile: React.FC<Props> = (props) => {
         });
         return (): void => {
             if (pokemonDataCall.isPending()) pokemonDataCall.cancel();
+            if (locationCall.isPending()) locationCall.cancel();
         };
     }, []);
 
@@ -114,9 +116,16 @@ const Profile: React.FC<Props> = (props) => {
     return (
         <div className={css('container')}>
             <div className={css('leftPanel')}>
+                <Button
+                    primary
+                    to="/"
+                >
+                    Back
+                </Button>
                 <div className={css('imageContainer')}>
                     <img
                         src={getPokemonImage(id)}
+                        alt={pokemonData.name}
                         className={css('image')}
                     />
                     <span className={css('name')}>

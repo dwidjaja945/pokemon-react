@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { cssBind } from '@toolkit/helper';
 
 import styles from './Button.scss';
@@ -10,7 +11,10 @@ interface Props {
     outlined?: boolean;
     primary?: boolean;
     className?: string;
-    onClick?(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+    to?: string;
+    onClick?(
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLAnchorElement>
+    ): void;
 }
 
 const Button: React.FC<Props> = (props) => {
@@ -20,14 +24,28 @@ const Button: React.FC<Props> = (props) => {
         outlined = false,
         primary = true,
         className,
+        to,
         children,
     } = props;
+    const classNames = css('button', primary && 'primary', outlined && 'outlined', className);
+    if (to) {
+        return (
+            <Link
+                to={to}
+                aria-label={ariaLabel}
+                onClick={onClick}
+                className={classNames}
+            >
+                {children}
+            </Link>
+        );
+    }
     return (
         <button
             type="button"
             aria-label={ariaLabel}
             onClick={onClick}
-            className={css('button', primary && 'primary', outlined && 'outlined', className)}
+            className={classNames}
         >
             {children}
         </button>
